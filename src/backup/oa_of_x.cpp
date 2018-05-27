@@ -204,18 +204,22 @@ int main (int argc, char **argv){
         //v_rs = reshape(v);
 /*
         A = transpose([u_rs; v_rs]);
+
         for i = 1 : ((width-1)*(height-1))
             b(i) = x_rs(i)*v_rs(i) - y_rs(i)*u_rs(i);
         end
         b = transpose(b);
+
         if det(transpose(A)*A) ~= 0
             FOE = inv(transpose(A)*A)*transpose(A)*b;
+
             if FOE(1) > width/2-2
                 FOE(1) = width/2-2;
             end
             if FOE(1) < -1*(width/2-2)
                 FOE(1) = -1*(width/2-2);
             end
+
             FOE = round(FOE);
         end
 */
