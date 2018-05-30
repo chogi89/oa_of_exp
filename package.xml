@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>oa_of</name>
+  <name>oa_of_exp</name>
   <version>0.1.0</version>
-  <description>The oa_of package</description>
+  <description>The oa_of_exp package</description>
   <maintainer email="chogi89@unist.ac.kr">Gangik Cho</maintainer>
   <author email="chogi89@unist.ac.kr">Gangik Cho</author>
 

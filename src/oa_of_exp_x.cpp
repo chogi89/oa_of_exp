@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "oa_of/MsgOAOF.h"
+#include "oa_of_exp/MsgOAOF.h"
 
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
@@ -182,10 +182,10 @@ void msgCallback(const geometry_msgs::PoseStamped::ConstPtr& Pose){
 // ------------------- //
 
 int main (int argc, char **argv){
-    ros::init(argc, argv, "oa_of_sim");
+    ros::init(argc, argv, "oa_of_exp");
     ros::NodeHandle nh, nh_mavros, nh_image;
 
-    ros::Publisher oa_of_pub = nh.advertise<oa_of::MsgOAOF>("oa_of_msg",100);
+    ros::Publisher oa_of_pub = nh.advertise<oa_of_exp::MsgOAOF>("oa_of_msg",100);
 
     ros::Publisher Set_Position_pub = nh_mavros.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local",100);
     ros::Subscriber oa_of_sub_pos = nh_mavros.subscribe("mavros/local_position/pose", 10, msgCallback);
@@ -599,22 +599,14 @@ int main (int argc, char **argv){
                 arrowedLine(mat_arrow_v,p1_v[i][j],p2_v[i][j],0,3,CV_AA,0,1);
 		    }
 		}
-/*
-        mat_array.copyTo(mat_total(Rect(0, 0, WIDTH, HEIGHT)));
-        resize(mat_arrow_h,mat_arrow_h,Size(WIDTH_H, HEIGHT_H));
-        resize(mat_arrow_v,mat_arrow_v,Size(WIDTH_V, HEIGHT_V));
-        mat_arrow_h.copyTo(mat_total(Rect(0, HEIGHT, WIDTH_H, HEIGHT_H)));
-        mat_arrow_v.copyTo(mat_total(Rect(WIDTH, 0, WIDTH_V, HEIGHT_V)));
-*/
-		/*namedWindow("Img_Array",WINDOW_NORMAL);
+        /*
+        namedWindow("Img_Array",WINDOW_NORMAL);
 		imshow("Img_Array",mat_array);
 		namedWindow("Optical_flow_h",WINDOW_NORMAL);
 		imshow("Optical_flow_h",mat_arrow_h);
 		namedWindow("Optical_flow_v",WINDOW_NORMAL);
-		imshow("Optical_flow_v",mat_arrow_v);*/
-        //namedWindow("Img_Total",WINDOW_NORMAL);
-        //imshow("Img_Total",mat_total);
-
+		imshow("Optical_flow_v",mat_arrow_v);
+        */
 		// --------------- //
         // -- Data Save -- //
 		// --------------- //
@@ -665,7 +657,7 @@ int main (int argc, char **argv){
 		if(keypressed == 27)
 			break;
 
-        oa_of::MsgOAOF msg;
+        oa_of_exp::MsgOAOF msg;
         geometry_msgs::PoseStamped msg_setposition;
 
 		msg.data = count;
