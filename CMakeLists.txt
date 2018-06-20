@@ -31,3 +31,11 @@ add_dependencies(oa_of_exp_x oa_of_exp_generate_messages_cpp)
 add_executable(oa_of_exp_const_h src/oa_of_exp_const_h.cpp)
 target_link_libraries(oa_of_exp_const_h ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(oa_of_exp_const_h oa_of_exp_generate_messages_cpp)
+
+add_executable(oa_of_exp_dc_const_h src/oa_of_exp_dc_const_h.cpp)
+target_link_libraries(oa_of_exp_dc_const_h ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(oa_of_exp_dc_const_h oa_of_exp_generate_messages_cpp)
+
+add_executable(oa_of_exp_dc_no_setpoint src/oa_of_exp_dc_no_setpoint.cpp)
+target_link_libraries(oa_of_exp_dc_no_setpoint ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(oa_of_exp_dc_no_setpoint oa_of_exp_generate_messages_cpp)
