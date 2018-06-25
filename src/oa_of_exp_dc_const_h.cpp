@@ -38,7 +38,7 @@
 #define HEIGHT_H_O  24
 #define WIDTH_V_O   32
 
-#define D_SET       1
+#define D_SET       0.5
 #define R_CHECK     0.1
 
 #define INIT_P_X    0
