@@ -553,8 +553,8 @@ int main (int argc, char **argv){
                 pose_o_ex_t = 0;
                 pose_o_ey_t = 0;
                 pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * S_eta_h_ctrl_input);
-                pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ex_t);
-                pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ex_t);
+                pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ez_t);
+                pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ez_t);
                 pose_p_z_t = pose_p_z_c + S_of_ud_ctrl_input + S_alt_ctrl_input;
 
                 // ------------------------- //
@@ -570,7 +570,7 @@ int main (int argc, char **argv){
 
                 pose_o_qw_t = cy * cr * cp + sy * sr * sp;
                 pose_o_qx_t = cy * sr * cp - sy * cr * sp;
-                pose_o_qy_t = cr * cr * sp + sy * sr * cp;
+                pose_o_qy_t = cy * cr * sp + sy * sr * cp;
                 pose_o_qz_t = sy * cr * cp - cy * sr * sp;
 
                 S_of_rl_ctrl_input = 0;
@@ -628,7 +628,7 @@ int main (int argc, char **argv){
 		// --------------- //
 
         //// Pose Data save
-		file_pose_data << count << ", " << pose_p_x_t << ", " << pose_p_y_t << ", " << pose_p_z_t << ", " << pose_o_ex_t << ", " << pose_o_ey_t << ", " << pose_o_ey_t << ", ";
+		file_pose_data << count << ", " << pose_p_x_t << ", " << pose_p_y_t << ", " << pose_p_z_t << ", " << pose_o_ex_t << ", " << pose_o_ey_t << ", " << pose_o_ez_t << ", ";
 		file_pose_data << pose_p_x_c << ", " << pose_p_y_c << ", " << pose_p_z_c << ", " << pose_o_ex_c << ", " << pose_o_ey_c<< ", " << pose_o_ez_c << endl;
 
         //// Horizental Optical Flow Data Save
