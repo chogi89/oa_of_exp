@@ -45,22 +45,22 @@
 #define INIT_P_Y    0
 #define INIT_P_Z    1.7
 
-#define RL_P_GAIN   0.01
+#define RL_P_GAIN   0.0005 // 0.01
 #define RL_D_GAIN   0
 #define UD_P_GAIN   0.01
 #define UD_D_GAIN   0
 #define EPS_P_GAIN  1000
-#define ETA_P_GAIN  1.7
+#define ETA_P_GAIN  0.001
 #define ETA_D_GAIN  0
 #define ALT_P_GAIN  3
 #define ALT_D_GAIN  0
 #define ALT_SAT     0.07
 
-#define SIGMA_C_ETA 3
-#define SIGMA_C_RL  3
+#define SIGMA_C_ETA 40
+#define SIGMA_C_RL  40
 
-#define SIGMA_M_ETA 20
-#define SIGMA_M_RL  20
+#define SIGMA_M_ETA 3
+#define SIGMA_M_RL  3
 
 #define CO_FRQ_UD   1
 #define CO_FRQ_RL   0.5
@@ -284,6 +284,7 @@ int main (int argc, char **argv){
     double alt_ctrl_input = 0;
     double alt_ctrl_sat_input = 0;
 
+    double S_eta_h_sum_f = 0;
     double S_of_rl_ctrl_input = 0;
     double S_eta_h_ctrl_input = 0;
     double S_of_ud_ctrl_input = 0;
@@ -552,6 +553,7 @@ int main (int argc, char **argv){
 
                 pose_o_ex_t = 0;
                 pose_o_ey_t = 0;
+		//pose_o_ez_t = pose_o_ez_c + S_of_rl_ctrl_input;
                 pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * S_eta_h_ctrl_input);
                 pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ez_t);
                 pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ez_t);
@@ -573,12 +575,14 @@ int main (int argc, char **argv){
                 pose_o_qy_t = cy * cr * sp + sy * sr * cp;
                 pose_o_qz_t = sy * cr * cp - cy * sr * sp;
 
-                S_of_rl_ctrl_input = 0;
+                S_eta_h_sum_f = 0;
+		S_of_rl_ctrl_input = 0;
                 S_eta_h_ctrl_input = 0;
                 S_of_ud_ctrl_input = 0;
                 S_alt_ctrl_input = 0;
 
             }else{
+		S_eta_h_sum_f = S_eta_h_sum_f + eta_h_sum_f;
                 S_of_rl_ctrl_input = S_of_rl_ctrl_input + of_rl_ctrl_input;
                 S_eta_h_ctrl_input = S_eta_h_ctrl_input + eta_h_ctrl_input;
                 S_of_ud_ctrl_input = S_of_ud_ctrl_input + of_ud_ctrl_input;
@@ -632,7 +636,7 @@ int main (int argc, char **argv){
 		file_pose_data << pose_p_x_c << ", " << pose_p_y_c << ", " << pose_p_z_c << ", " << pose_o_ex_c << ", " << pose_o_ey_c<< ", " << pose_o_ez_c << endl;
 
         //// Horizental Optical Flow Data Save
-		file_of_h_data << count << ", " << OFright << ", " << OFleft << ", " << of_rl_e << ", " << of_rl_e_f << ", ";
+		file_of_h_data << count << ", " << OFright << ", " << OFleft << ", " << of_rl_e << ", " << of_rl_e_f;
 		for(int i=0; i<(WIDTH_H); i++){
 		    for(int j=0; j<(HEIGHT_H); j++){
                 file_of_h_data << u_h[i][j] << ", ";
@@ -652,7 +656,7 @@ int main (int argc, char **argv){
 		file_of_v_data << endl;
 
         //// Sumation of Eta Flow Data Save
-		file_eta_h_data << count << ", " << eta_h_sum << ", " << eta_h_sum_f << ", ";
+		file_eta_h_data << count << ", " << eta_h_sum << ", " << eta_h_sum_f << ", " << S_eta_h_sum_f << ", ";
         for(int i=0; i<(WIDTH_H); i++){
 		    for(int j=0; j<(HEIGHT_H); j++){
                 file_eta_h_data << eta_h[i][j] << ", ";
@@ -701,6 +705,7 @@ int main (int argc, char **argv){
 		ROS_INFO("-------------------------------");
 		ROS_INFO("ETA_SUM_F = %f", eta_h_sum_f);
 		ROS_INFO("ETA_CTRL = %f", eta_h_ctrl_signed_input);
+		ROS_INFO("S_ETA_SUM_F = %f", S_eta_h_sum_f);
 		ROS_INFO("-------------------------------");
 		ROS_INFO("OF_UD_E = %f", of_ud_eps);
 		ROS_INFO("OF_UD_E_F = %f", of_ud_eps_f);
