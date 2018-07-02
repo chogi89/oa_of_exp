@@ -45,12 +45,12 @@
 #define INIT_P_Y    0
 #define INIT_P_Z    1.7
 
-#define RL_P_GAIN   0.001 // 0.01
+#define RL_P_GAIN   0.002 // 0.01
 #define RL_D_GAIN   0
 #define UD_P_GAIN   0.01
 #define UD_D_GAIN   0
 #define EPS_P_GAIN  1000
-#define ETA_P_GAIN  0.03
+#define ETA_P_GAIN  1
 #define ETA_D_GAIN  0
 #define ALT_P_GAIN  3
 #define ALT_D_GAIN  0
