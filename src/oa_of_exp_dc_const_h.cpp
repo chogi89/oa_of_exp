@@ -553,7 +553,7 @@ int main (int argc, char **argv){
 
                 pose_o_ex_t = 0;
                 pose_o_ey_t = 0;
-		//pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * S_eta_h_ctrl_input);
+        		//pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * S_eta_h_ctrl_input);
                 pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * Sign(eta_h_e) * S_eta_h_ctrl_input);
                 pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ez_t);
                 pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ez_t);
@@ -576,13 +576,13 @@ int main (int argc, char **argv){
                 pose_o_qz_t = sy * cr * cp - cy * sr * sp;
 
                 S_eta_h_sum_f = 0;
-		S_of_rl_ctrl_input = 0;
+                S_of_rl_ctrl_input = 0;
                 S_eta_h_ctrl_input = 0;
                 S_of_ud_ctrl_input = 0;
                 S_alt_ctrl_input = 0;
 
             }else{
-		S_eta_h_sum_f = S_eta_h_sum_f + eta_h_sum_f;
+                S_eta_h_sum_f = S_eta_h_sum_f + eta_h_sum_f;
                 S_of_rl_ctrl_input = S_of_rl_ctrl_input + of_rl_ctrl_input;
                 S_eta_h_ctrl_input = S_eta_h_ctrl_input + eta_h_ctrl_input;
                 S_of_ud_ctrl_input = S_of_ud_ctrl_input + of_ud_ctrl_input;

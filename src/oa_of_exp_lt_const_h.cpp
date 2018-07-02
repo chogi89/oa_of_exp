@@ -38,7 +38,7 @@
 #define HEIGHT_H_O  24
 #define WIDTH_V_O   32
 
-#define D_SET       0.1
+#define D_SET       1
 
 #define INIT_P_X    0
 #define INIT_P_Y    0
@@ -542,7 +542,7 @@ int main (int argc, char **argv){
             sigmoid_eta = Sigmoid_fnc(SIGMA_M_ETA,SIGMA_C_ETA,eta_h_sum_f,-1);
             sigmoid_rl = Sigmoid_fnc(SIGMA_M_RL,SIGMA_C_RL,eta_h_sum_f,1);
 
-            if(((count/8) - (int)(count/8)) == 0){
+            if(((count/2) - (int)(count/2)) == 0){
                 // ---------------------------- //
                 // -- Target Pose Generation -- //
                 // ---------------------------- //
@@ -560,14 +560,14 @@ int main (int argc, char **argv){
 
                 cy = cos(pose_o_ez_t * 0.5);
                 sy = sin(pose_o_ez_t * 0.5);
-                cr = cos(pose_o_ey_t * 0.5);
-                sr = sin(pose_o_ey_t * 0.5);
-                cp = cos(pose_o_ex_t * 0.5);
-                sp = sin(pose_o_ex_t * 0.5);
+                cr = cos(pose_o_ex_t * 0.5);
+                sr = sin(pose_o_ex_t * 0.5);
+                cp = cos(pose_o_ey_t * 0.5);
+                sp = sin(pose_o_ey_t * 0.5);
 
                 pose_o_qw_t = cy * cr * cp + sy * sr * sp;
                 pose_o_qx_t = cy * sr * cp - sy * cr * sp;
-                pose_o_qy_t = cr * cr * sp + sy * sr * cp;
+                pose_o_qy_t = cy * cr * sp + sy * sr * cp;
                 pose_o_qz_t = sy * cr * cp - cy * sr * sp;
             }
         }
@@ -614,7 +614,7 @@ int main (int argc, char **argv){
 		// --------------- //
 
         //// Pose Data save
-		file_pose_data << count << ", " << pose_p_x_t << ", " << pose_p_y_t << ", " << pose_p_z_t << ", " << pose_o_ex_t << ", " << pose_o_ey_t << ", " << pose_o_ey_t << ", ";
+		file_pose_data << count << ", " << pose_p_x_t << ", " << pose_p_y_t << ", " << pose_p_z_t << ", " << pose_o_ex_t << ", " << pose_o_ey_t << ", " << pose_o_ez_t << ", ";
 		file_pose_data << pose_p_x_c << ", " << pose_p_y_c << ", " << pose_p_z_c << ", " << pose_o_ex_c << ", " << pose_o_ey_c<< ", " << pose_o_ez_c << endl;
 
         //// Horizental Optical Flow Data Save
