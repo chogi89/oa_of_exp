@@ -38,29 +38,29 @@
 #define HEIGHT_H_O  24
 #define WIDTH_V_O   32
 
-#define D_SET       1
+#define D_SET       0.5
 #define R_CHECK     0.1
 
 #define INIT_P_X    0
 #define INIT_P_Y    0
 #define INIT_P_Z    1.7
 
-#define RL_P_GAIN   0.0005 // 0.01
+#define RL_P_GAIN   0.001 // 0.01
 #define RL_D_GAIN   0
 #define UD_P_GAIN   0.01
 #define UD_D_GAIN   0
 #define EPS_P_GAIN  1000
-#define ETA_P_GAIN  0.001
+#define ETA_P_GAIN  0.03
 #define ETA_D_GAIN  0
 #define ALT_P_GAIN  3
 #define ALT_D_GAIN  0
 #define ALT_SAT     0.07
 
-#define SIGMA_C_ETA 40
-#define SIGMA_C_RL  40
+#define SIGMA_C_ETA 3
+#define SIGMA_C_RL  3
 
-#define SIGMA_M_ETA 3
-#define SIGMA_M_RL  3
+#define SIGMA_M_ETA 20
+#define SIGMA_M_RL  20
 
 #define CO_FRQ_UD   1
 #define CO_FRQ_RL   0.5
@@ -553,8 +553,8 @@ int main (int argc, char **argv){
 
                 pose_o_ex_t = 0;
                 pose_o_ey_t = 0;
-		//pose_o_ez_t = pose_o_ez_c + S_of_rl_ctrl_input;
-                pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * S_eta_h_ctrl_input);
+		//pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * S_eta_h_ctrl_input);
+                pose_o_ez_t = pose_o_ez_c + (sigmoid_rl*S_of_rl_ctrl_input) + (sigmoid_eta * Sign(eta_h_e) * S_eta_h_ctrl_input);
                 pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ez_t);
                 pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ez_t);
                 pose_p_z_t = 1.7;
@@ -565,10 +565,10 @@ int main (int argc, char **argv){
 
                 cy = cos(pose_o_ez_t * 0.5);
                 sy = sin(pose_o_ez_t * 0.5);
-                cr = cos(pose_o_ey_t * 0.5);
-                sr = sin(pose_o_ey_t * 0.5);
-                cp = cos(pose_o_ex_t * 0.5);
-                sp = sin(pose_o_ex_t * 0.5);
+                cr = cos(pose_o_ex_t * 0.5);
+                sr = sin(pose_o_ex_t * 0.5);
+                cp = cos(pose_o_ey_t * 0.5);
+                sp = sin(pose_o_ey_t * 0.5);
 
                 pose_o_qw_t = cy * cr * cp + sy * sr * sp;
                 pose_o_qx_t = cy * sr * cp - sy * cr * sp;
@@ -636,7 +636,7 @@ int main (int argc, char **argv){
 		file_pose_data << pose_p_x_c << ", " << pose_p_y_c << ", " << pose_p_z_c << ", " << pose_o_ex_c << ", " << pose_o_ey_c<< ", " << pose_o_ez_c << endl;
 
         //// Horizental Optical Flow Data Save
-		file_of_h_data << count << ", " << OFright << ", " << OFleft << ", " << of_rl_e << ", " << of_rl_e_f;
+		file_of_h_data << count << ", " << OFright << ", " << OFleft << ", " << of_rl_e << ", " << of_rl_e_f << ", ";
 		for(int i=0; i<(WIDTH_H); i++){
 		    for(int j=0; j<(HEIGHT_H); j++){
                 file_of_h_data << u_h[i][j] << ", ";
