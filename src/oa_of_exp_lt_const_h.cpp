@@ -38,7 +38,7 @@
 #define HEIGHT_H_O  24
 #define WIDTH_V_O   32
 
-#define D_SET       0.1
+#define D_SET       1
 
 #define INIT_P_X    0
 #define INIT_P_Y    0
@@ -542,7 +542,7 @@ int main (int argc, char **argv){
             sigmoid_eta = Sigmoid_fnc(SIGMA_M_ETA,SIGMA_C_ETA,eta_h_sum_f,-1);
             sigmoid_rl = Sigmoid_fnc(SIGMA_M_RL,SIGMA_C_RL,eta_h_sum_f,1);
 
-            if(((count/8) - (int)(count/8)) == 0){
+            if(((count/2) - (int)(count/2)) == 0){
                 // ---------------------------- //
                 // -- Target Pose Generation -- //
                 // ---------------------------- //
