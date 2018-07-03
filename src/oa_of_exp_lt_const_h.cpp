@@ -45,7 +45,7 @@
 #define INIT_P_Z    1.7
 #define INIT_O_X    0
 #define INIT_O_Y    0
-#define INIT_O_Z    0
+#define INIT_O_Z    -1*PI
 
 #define RL_P_GAIN   0.01
 #define RL_D_GAIN   0.01
