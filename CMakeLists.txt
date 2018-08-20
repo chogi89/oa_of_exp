@@ -43,3 +43,19 @@ add_dependencies(oa_of_exp_dc_no_setpoint oa_of_exp_generate_messages_cpp)
 add_executable(oa_of_exp_lt_const_h src/oa_of_exp_lt_const_h.cpp)
 target_link_libraries(oa_of_exp_lt_const_h ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(oa_of_exp_lt_const_h oa_of_exp_generate_messages_cpp)
+
+add_executable(oa_of_exp_lt_no_setpoint src/oa_of_exp_lt_no_setpoint.cpp)
+target_link_libraries(oa_of_exp_lt_no_setpoint ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(oa_of_exp_lt_no_setpoint oa_of_exp_generate_messages_cpp)
+
+add_executable(oa_of_exp_etri_1 src/oa_of_exp_etri_1.cpp)
+target_link_libraries(oa_of_exp_etri_1 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(oa_of_exp_etri_1 oa_of_exp_generate_messages_cpp)
+
+add_executable(oa_of_exp_etri_2 src/oa_of_exp_etri_2.cpp)
+target_link_libraries(oa_of_exp_etri_2 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(oa_of_exp_etri_2 oa_of_exp_generate_messages_cpp)
+
+add_executable(oa_of_exp_etri_3 src/oa_of_exp_etri_3.cpp)
+target_link_libraries(oa_of_exp_etri_3 ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(oa_of_exp_etri_3 oa_of_exp_generate_messages_cpp)

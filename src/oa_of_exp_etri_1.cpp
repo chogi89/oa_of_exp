@@ -17,7 +17,7 @@
 #include <ctype.h>
 #include <math.h>
 
-#define S_TIME      0.125
+#define S_TIME      0.2
 
 #define ALPHA       0.00003
 
@@ -26,14 +26,14 @@
 #define O_WIDTH     160
 #define O_HEIGHT    120
 
-#define	WIDTH       80
-#define HEIGHT	    60
+#define	WIDTH       160
+#define HEIGHT	    120
 
-#define WIDTH_H     80
-#define HEIGHT_H    12
+#define WIDTH_H     160
+#define HEIGHT_H    24
 
-#define WIDTH_V     16
-#define HEIGHT_V    60
+#define WIDTH_V     32
+#define HEIGHT_V    120
 
 #define HEIGHT_H_O  24
 #define WIDTH_V_O   32
@@ -47,19 +47,19 @@
 #define INIT_O_Y    0
 #define INIT_O_Z    0
 
-#define RL_P_GAIN   0.033
+#define RL_P_GAIN   0
 #define RL_D_GAIN   0
 #define UD_P_GAIN   0
 #define UD_D_GAIN   0
 #define EPS_P_GAIN  1000
-#define ETA_P_GAIN  1.7
+#define ETA_P_GAIN  1.2
 #define ETA_D_GAIN  0
 #define ALT_P_GAIN  0
 #define ALT_D_GAIN  0
 #define ALT_SAT     0.07
 
-#define SIGMA_C_ETA 3
-#define SIGMA_C_RL  3
+#define SIGMA_C_ETA 2.2
+#define SIGMA_C_RL  2.2
 
 #define SIGMA_M_ETA 20
 #define SIGMA_M_RL  20
@@ -571,7 +571,7 @@ int main (int argc, char **argv){
                 pose_o_ez_t = pose_o_ez_c + (sigmoid_eta * eta_h_ctrl_signed_input) + (sigmoid_rl * of_rl_ctrl_input);
                 pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ez_t);
                 pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ez_t);
-                pose_p_z_t = 1.7;
+                pose_p_z_t = pose_p_z_c + of_ud_ctrl_input + alt_ctrl_sat_input;
 
                 // ------------------------- //
                 // -- Euler to Quaternion -- //
