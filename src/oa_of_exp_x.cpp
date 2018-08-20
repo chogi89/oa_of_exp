@@ -549,8 +549,8 @@ int main (int argc, char **argv){
             pose_o_ex_t = 0;
             pose_o_ey_t = 0;
             pose_o_ez_t = 0;
-            pose_p_x_t = pose_p_x_c + D_SET;
-            pose_p_y_t = pose_p_y_c;
+            pose_p_x_t = 0;
+            pose_p_y_t = 0;
             pose_p_z_t = 1.7;
 
             // ------------------------- //

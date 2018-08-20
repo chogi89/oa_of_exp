@@ -38,28 +38,25 @@
 #define HEIGHT_H_O  24
 #define WIDTH_V_O   32
 
-#define D_SET       0.2
+#define D_SET       0.1
 
 #define INIT_P_X    0
 #define INIT_P_Y    0
 #define INIT_P_Z    1.7
-#define INIT_O_X    0
-#define INIT_O_Y    0
-#define INIT_O_Z    0
 
-#define RL_P_GAIN   0
-#define RL_D_GAIN   0
-#define UD_P_GAIN   0
-#define UD_D_GAIN   0
+#define RL_P_GAIN   0.01
+#define RL_D_GAIN   0.01
+#define UD_P_GAIN   0.01
+#define UD_D_GAIN   0.01
 #define EPS_P_GAIN  1000
-#define ETA_P_GAIN  1.2
+#define ETA_P_GAIN  1.7
 #define ETA_D_GAIN  0
-#define ALT_P_GAIN  0
+#define ALT_P_GAIN  3
 #define ALT_D_GAIN  0
 #define ALT_SAT     0.07
 
-#define SIGMA_C_ETA 2.2
-#define SIGMA_C_RL  2.2
+#define SIGMA_C_ETA 3
+#define SIGMA_C_RL  3
 
 #define SIGMA_M_ETA 20
 #define SIGMA_M_RL  20
@@ -78,9 +75,9 @@ using namespace std;
 
 unsigned char Img_data[O_WIDTH*O_HEIGHT];
 
-double pose_p_x_c = 0;
-double pose_p_y_c = 0;
-double pose_p_z_c = 0;
+double pose_p_x_c = INIT_P_X;
+double pose_p_y_c = INIT_P_Y;
+double pose_p_z_c = INIT_P_Z;
 double pose_o_qx_c = 0;
 double pose_o_qy_c = 0;
 double pose_o_qz_c = 0;
@@ -89,9 +86,9 @@ double pose_o_ex_c = 0;
 double pose_o_ey_c = 0;
 double pose_o_ez_c = 0;
 
-double pose_p_x_p = 0;
-double pose_p_y_p = 0;
-double pose_p_z_p = 0;
+double pose_p_x_p = INIT_P_X;
+double pose_p_y_p = INIT_P_Y;
+double pose_p_z_p = INIT_P_Z;
 double pose_o_qx_p = 0;
 double pose_o_qy_p = 0;
 double pose_o_qz_p = 0;
@@ -103,13 +100,13 @@ double pose_o_ez_p = 0;
 double pose_p_x_t = INIT_P_X;
 double pose_p_y_t = INIT_P_Y;
 double pose_p_z_t = INIT_P_Z;
-double pose_o_ex_t = INIT_O_X;
-double pose_o_ey_t = INIT_O_Y;
-double pose_o_ez_t = INIT_O_Z;
 double pose_o_qx_t = 0;
 double pose_o_qy_t = 0;
 double pose_o_qz_t = 0;
 double pose_o_qw_t = 1;
+double pose_o_ex_t = 0;
+double pose_o_ey_t = 0;
+double pose_o_ez_t = 0;
 
 // ----------------------- //
 // -- General Functions -- //
@@ -300,22 +297,6 @@ int main (int argc, char **argv){
     double sr = 0;
     double cp = 0;
     double sp = 0;
-
-    // ------------------------- //
-    // -- Euler to Quaternion -- //
-    // ------------------------- //
-
-    cy = cos(pose_o_ez_t * 0.5);
-    sy = sin(pose_o_ez_t * 0.5);
-    cr = cos(pose_o_ex_t * 0.5);
-    sr = sin(pose_o_ex_t * 0.5);
-    cp = cos(pose_o_ey_t * 0.5);
-    sp = sin(pose_o_ey_t * 0.5);
-
-    pose_o_qw_t = cy * cr * cp + sy * sr * sp;
-    pose_o_qx_t = cy * sr * cp - sy * cr * sp;
-    pose_o_qy_t = cy * cr * sp + sy * sr * cp;
-    pose_o_qz_t = sy * cr * cp - cy * sr * sp;
 
     cap.open(-1);
 	if(!cap.isOpened()){
@@ -561,34 +542,32 @@ int main (int argc, char **argv){
             sigmoid_eta = Sigmoid_fnc(SIGMA_M_ETA,SIGMA_C_ETA,eta_h_sum_f,-1);
             sigmoid_rl = Sigmoid_fnc(SIGMA_M_RL,SIGMA_C_RL,eta_h_sum_f,1);
 
-            if(((count/1) - (int)(count/1)) == 0){
-                // ---------------------------- //
-                // -- Target Pose Generation -- //
-                // ---------------------------- //
+            // ---------------------------- //
+            // -- Target Pose Generation -- //
+            // ---------------------------- //
 
-                pose_o_ex_t = 0;
-                pose_o_ey_t = 0;
-                pose_o_ez_t = pose_o_ez_c + (sigmoid_eta * eta_h_ctrl_signed_input) + (sigmoid_rl * of_rl_ctrl_input);
-                pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ez_t);
-                pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ez_t);
-                pose_p_z_t = 1.7;
+            pose_o_ex_t = 0;
+            pose_o_ey_t = 0;
+            pose_o_ez_t = pose_o_ez_c + (sigmoid_eta * eta_h_ctrl_signed_input) + (sigmoid_rl * of_rl_ctrl_input);
+            pose_p_x_t = pose_p_x_c + D_SET*cos(pose_o_ez_t);
+            pose_p_y_t = pose_p_y_c + D_SET*sin(pose_o_ez_t);
+            pose_p_z_t = 1.7;
 
-                // ------------------------- //
-                // -- Euler to Quaternion -- //
-                // ------------------------- //
+            // ------------------------- //
+            // -- Euler to Quaternion -- //
+            // ------------------------- //
 
-                cy = cos(pose_o_ez_t * 0.5);
-                sy = sin(pose_o_ez_t * 0.5);
-                cr = cos(pose_o_ex_t * 0.5);
-                sr = sin(pose_o_ex_t * 0.5);
-                cp = cos(pose_o_ey_t * 0.5);
-                sp = sin(pose_o_ey_t * 0.5);
+            cy = cos(pose_o_ez_t * 0.5);
+            sy = sin(pose_o_ez_t * 0.5);
+            cr = cos(pose_o_ey_t * 0.5);
+            sr = sin(pose_o_ey_t * 0.5);
+            cp = cos(pose_o_ex_t * 0.5);
+            sp = sin(pose_o_ex_t * 0.5);
 
-                pose_o_qw_t = cy * cr * cp + sy * sr * sp;
-                pose_o_qx_t = cy * sr * cp - sy * cr * sp;
-                pose_o_qy_t = cy * cr * sp + sy * sr * cp;
-                pose_o_qz_t = sy * cr * cp - cy * sr * sp;
-            }
+            pose_o_qw_t = cy * cr * cp + sy * sr * sp;
+            pose_o_qx_t = cy * sr * cp - sy * cr * sp;
+            pose_o_qy_t = cr * cr * sp + sy * sr * cp;
+            pose_o_qz_t = sy * cr * cp - cy * sr * sp;
         }
 
         // ------------- //
@@ -633,7 +612,7 @@ int main (int argc, char **argv){
 		// --------------- //
 
         //// Pose Data save
-		file_pose_data << count << ", " << pose_p_x_t << ", " << pose_p_y_t << ", " << pose_p_z_t << ", " << pose_o_ex_t << ", " << pose_o_ey_t << ", " << pose_o_ez_t << ", ";
+		file_pose_data << count << ", " << pose_p_x_t << ", " << pose_p_y_t << ", " << pose_p_z_t << ", " << pose_o_ex_t << ", " << pose_o_ey_t << ", " << pose_o_ey_t << ", ";
 		file_pose_data << pose_p_x_c << ", " << pose_p_y_c << ", " << pose_p_z_c << ", " << pose_o_ex_c << ", " << pose_o_ey_c<< ", " << pose_o_ez_c << endl;
 
         //// Horizental Optical Flow Data Save
