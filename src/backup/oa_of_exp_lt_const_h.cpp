@@ -38,7 +38,7 @@
 #define HEIGHT_H_O  24
 #define WIDTH_V_O   32
 
-#define D_SET       0.5
+#define D_SET       1
 
 #define INIT_P_X    0
 #define INIT_P_Y    0
@@ -47,19 +47,19 @@
 #define INIT_O_Y    0
 #define INIT_O_Z    0
 
-#define RL_P_GAIN   0
-#define RL_D_GAIN   0
-#define UD_P_GAIN   0
-#define UD_D_GAIN   0
+#define RL_P_GAIN   0.01
+#define RL_D_GAIN   0.01
+#define UD_P_GAIN   0.01
+#define UD_D_GAIN   0.01
 #define EPS_P_GAIN  1000
-#define ETA_P_GAIN  1.2
+#define ETA_P_GAIN  0.5
 #define ETA_D_GAIN  0
-#define ALT_P_GAIN  0
+#define ALT_P_GAIN  3
 #define ALT_D_GAIN  0
 #define ALT_SAT     0.07
 
-#define SIGMA_C_ETA 2.2
-#define SIGMA_C_RL  2.2
+#define SIGMA_C_ETA 5
+#define SIGMA_C_RL  5
 
 #define SIGMA_M_ETA 20
 #define SIGMA_M_RL  20
@@ -561,7 +561,7 @@ int main (int argc, char **argv){
             sigmoid_eta = Sigmoid_fnc(SIGMA_M_ETA,SIGMA_C_ETA,eta_h_sum_f,-1);
             sigmoid_rl = Sigmoid_fnc(SIGMA_M_RL,SIGMA_C_RL,eta_h_sum_f,1);
 
-            if(((count/1) - (int)(count/1)) == 0){
+            if(((count/2) - (int)(count/2)) == 0){
                 // ---------------------------- //
                 // -- Target Pose Generation -- //
                 // ---------------------------- //
